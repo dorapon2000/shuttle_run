@@ -11,6 +11,11 @@ export default new Router({
       component: require('@/components/Shelf').default
     },
     {
+      path: '/book/:id',
+      name: 'book-detail',
+      component: require('@/components/BookDetail').default
+    },
+    {
       path: '*',
       redirect: '/'
     }
