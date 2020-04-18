@@ -15,31 +15,35 @@ import Book from './Book.vue'
 export default {
   name: 'Shelf',
   components: { Book },
-  props: {
-    books: [
-      {
-        id: 1,
-        tag: 1,
-        problems: [
-          {
-            text: 'ナポレオンの出身国は？',
-            answer: 'フランス',
-            stats: { ok: 1, ng: 2 }
-          }
-        ]
-      },
-      {
-        id: 2,
-        tag: 1,
-        problems: [
-          {
-            text: 'フランス革命の発端は何監獄への襲撃',
-            answer: 'バスティーユ',
-            stats: { ok: 0, ng: 0 }
-          }
-        ]
-      }
-    ]
+  data () {
+    return {
+      books: [
+        {
+          id: 1,
+          tag: 1,
+          title: 'ナポレオン',
+          problems: [
+            {
+              text: 'ナポレオンの出身国は？',
+              answer: 'フランス',
+              stats: { OK: 1, NG: 2 }
+            }
+          ]
+        },
+        {
+          id: 2,
+          tag: 1,
+          title: 'フランス革命',
+          problems: [
+            {
+              text: 'フランス革命の発端は何監獄への襲撃',
+              answer: 'バスティーユ',
+              stats: { OK: 0, NG: 0 }
+            }
+          ]
+        }
+      ]
+    }
   }
 }
 </script>
