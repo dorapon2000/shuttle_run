@@ -18,8 +18,8 @@ export default {
 .divBookTitle{
     background-color: white;
     margin: 1em auto;
-    text-align: left;
-    width: 50%;
-    height: 2em;
+    text-align: center;
+    width: 90%;
+    border-radius: 0.5em; 
 }
 </style>

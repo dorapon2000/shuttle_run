@@ -23,6 +23,9 @@ export default {
 .divBook{
     height: 20em;
     width: 15em;
-    background-color: darkcyan;
+    border-radius: 1em;
+    padding: 0.5em;
+    background-color: rgba(17, 171, 177, 0.79);
+    margin: 0.5em;
 }
 </style>

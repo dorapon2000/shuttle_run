@@ -41,6 +41,30 @@ export default {
               stats: { OK: 0, NG: 0 }
             }
           ]
+        },
+        {
+          id: 2,
+          tag: 1,
+          title: 'フランス革命',
+          problems: [
+            {
+              text: 'フランス革命の発端は何監獄への襲撃',
+              answer: 'バスティーユ',
+              stats: { OK: 0, NG: 0 }
+            }
+          ]
+        },
+        {
+          id: 2,
+          tag: 1,
+          title: 'フランス革命',
+          problems: [
+            {
+              text: 'フランス革命の発端は何監獄への襲撃',
+              answer: 'バスティーユ',
+              stats: { OK: 0, NG: 0 }
+            }
+          ]
         }
       ]
     }
@@ -84,6 +108,8 @@ aside {
 main {
   grid-area: main;
   background-color: #e0ffff;
+  display: flex;
+  flex-wrap:wrap;
 }
 
 .btn-add-book {
