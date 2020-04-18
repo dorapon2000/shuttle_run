@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{sum}}
+    {{SumOfOK}}
   </div>
 </template>
 
@@ -8,16 +8,17 @@
 export default {
   name: 'BookStatistics',
   props: {
-    statisticks: {
-      required: false,
-      default: function () {
-        return [{ OK: 0, NG: 0 }]
-      }
+    problems: {
+      type: Array
     }
   },
   computed: {
-    sum: function () {
-      return this.statisticks.reduce((a, b) => { return a.OK + b.OK })
+    SumOfOK: function () {
+      let result = 0
+      this.problems.forEach(problem => {
+        result += problem.stats.OK
+      })
+      return result
     }
   }
 }
