@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="bookStats">
     {{SumOfOK}}
   </div>
 </template>
@@ -25,5 +25,10 @@ export default {
 </script>
 
 <style>
-
+.bookStats{
+  width:90%;
+  height: 60%;
+  margin: 1em auto;
+  background-color: white;
+}
 </style>
