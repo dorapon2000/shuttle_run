@@ -63,6 +63,7 @@ export default {
 
         storage.set(storageName, book, err => {
           if (err) throw err
+          this.books.push(book)
         })
       }
     },
@@ -98,7 +99,6 @@ export default {
   mounted: function () {
     this.clearShelf()
     this.setDefault()
-    this.getAllBook()
   }
 }
 </script>
