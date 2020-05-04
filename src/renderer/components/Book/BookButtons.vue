@@ -16,7 +16,7 @@ export default {
     request: function (requestCode) {
       switch (requestCode) {
         case 0:
-          this.$emit('request-information', this.id)
+          this.$emit('request-information')
           break
         case 1:
           this.$emit('request-clone', this.id)
