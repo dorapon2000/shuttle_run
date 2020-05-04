@@ -2,7 +2,7 @@
   <div class="divBook">
     <book-belt v-bind:title="book.title" @renamed="renamedEvent"></book-belt>
     <book-statistics v-bind:problems="book.problems"></book-statistics>
-    <book-buttons></book-buttons>
+    <book-buttons :id="book.id" @request-information="getInformation" @request-delete="deleteBook" @request-clone="cloneBook"></book-buttons>
   </div>
 </template>
 
@@ -26,6 +26,13 @@ export default {
   methods: {
     renamedEvent: function (renamed) {
       this.book.title = renamed
+    },
+    getInformation: function (bookId) {
+      this.$router.push({name: 'book-detail', params: {id: bookId}})
+    },
+    deleteBook: function (bookId) {
+    },
+    cloneBook: function (bookId) {
     }
   }
 }

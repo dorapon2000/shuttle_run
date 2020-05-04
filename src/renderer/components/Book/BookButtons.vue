@@ -1,14 +1,34 @@
 <template>
   <div class="divBookButtons">
-    <button><i class="fas fa-info-circle"></i></button>
-    <button><i class="far fa-copy"></i></button>
-    <button><i class="fas fa-backspace"></i></button>
+    <button @click="request(0)"><i class="fas fa-info-circle"></i></button>
+    <button @click="request(1)"><i class="far fa-copy"></i></button>
+    <button @click="request(2)"><i class="fas fa-backspace"></i></button>
   </div>  
 </template>
 
 <script>
 export default {
-  name: 'bookButtons'
+  name: 'bookButtons',
+  props: {
+    id: Number
+  },
+  methods: {
+    request: function (requestCode) {
+      switch (requestCode) {
+        case 0:
+          this.$emit('request-information', this.id)
+          break
+        case 1:
+          this.$emit('request-clone', this.id)
+          break
+        case 2:
+          this.$emit('request-delete', this.id)
+          break
+        default:
+          break
+      }
+    }
+  }
 }
 </script>
 

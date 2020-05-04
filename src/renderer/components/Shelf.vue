@@ -43,7 +43,7 @@ export default {
           ]
         },
         {
-          id: 2,
+          id: 3,
           tag: 1,
           title: 'フランス革命',
           problems: [
@@ -55,7 +55,7 @@ export default {
           ]
         },
         {
-          id: 2,
+          id: 4,
           tag: 1,
           title: 'フランス革命',
           problems: [
