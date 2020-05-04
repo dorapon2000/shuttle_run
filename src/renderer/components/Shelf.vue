@@ -104,7 +104,6 @@ export default {
     updateBook: function (book) {
       storage.set(`book${book.id}`, book, err => {
         if (err) throw err
-        this.getAllBook()
       })
     },
     delBook: function (bookId) {
