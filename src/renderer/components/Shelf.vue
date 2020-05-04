@@ -121,8 +121,6 @@ export default {
     }
   },
   mounted: function () {
-    // this.clearShelf()
-    // this.setDefault()
     this.getAllBook()
     if (Object.values(this.books).length === 0) {
       this.setDefault()
