@@ -28,8 +28,8 @@ export default {
       this.book.title = renamed
       this.$emit('updated', this.book)
     },
-    getInformation: function (bookId) {
-      this.$router.push({name: 'book-detail', params: {id: bookId}})
+    getInformation: function () {
+      this.$router.push({name: 'book-detail', params: {book: this.book}})
     },
     deleteBook: function (bookId) {
     },
