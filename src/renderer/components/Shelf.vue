@@ -1,10 +1,10 @@
 <template>
   <div id="wrapper">
     <aside>
-      <a href="#" class="btn-add-book">+</a>
+      <a href="#" class="btn-add-book" @click="createBook(null)">+</a>
     </aside>
     <main>
-      <Book v-for="book in books" :book="book" :key="book.id"></Book>
+      <Book v-for="book in books" :book="book" :key="book.id" @updated="updateBook"></Book>
     </main>
   </div>
 </template>
@@ -40,6 +40,12 @@ const defaultBooks = [
     ]
   }
 ]
+const templateBook = {
+  id: null,
+  tag: 1,
+  title: '',
+  problems: []
+}
 
 export default {
   name: 'Shelf',
@@ -54,7 +60,7 @@ export default {
       if (this.books.length === 0) {
         return 0
       }
-      return Math.max.apply(null, this.books.map(b => b.id)) + 1
+      return (Object.values(this.books).reduce((a, b) => { return a.id > b.id ? a : b })).id + 1
     },
     setDefault: function () {
       for (const bookIdx in defaultBooks) {
@@ -72,10 +78,17 @@ export default {
         this.books = books
       })
     },
-    createBook: function (book, cb) {
+    createBook: function (book) {
+      if (!book) {
+        book = templateBook
+      }
+      book.id = this.getNewId()
+      this.updateBook(book)
+    },
+    updateBook: function (book) {
       storage.set(`book${book.id}`, book, err => {
         if (err) throw err
-        this.books.push(book)
+        this.getAllBook()
       })
     },
     delBook: function (bookId) {
@@ -83,10 +96,6 @@ export default {
         if (err) throw err
         this.books = this.books.filter(b => b.id === bookId)
       })
-    },
-    updateBook: function (book, idx) {
-      this.delBook(book.id)
-      this.createBook(book)
     },
     clearShelf: function () {
       storage.clear(err => {
@@ -96,9 +105,12 @@ export default {
     }
   },
   mounted: function () {
-    this.clearShelf()
-    this.setDefault()
+    // this.clearShelf()
+    // this.setDefault()
     this.getAllBook()
+    if (Object.values(this.books).length === 0) {
+      this.setDefault()
+    }
   }
 }
 </script>
