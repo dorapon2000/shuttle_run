@@ -29,7 +29,6 @@ export default {
   mounted: function () {
     const canvas = this.$refs.canvasStats
     canvas.height = 250
-    console.log(this.SumOfOkAvg())
     const chart = new Chart(canvas, {
       type: 'doughnut',
       data: {
