@@ -72,7 +72,7 @@ export default {
         this.books = books
       })
     },
-    createBook: function (book, cb) {
+    createBook: function (book) {
       storage.set(`book${book.id}`, book, err => {
         if (err) throw err
         this.books.push(book)
@@ -84,7 +84,7 @@ export default {
         this.books = this.books.filter(b => b.id === bookId)
       })
     },
-    updateBook: function (book, idx) {
+    updateBook: function (book) {
       this.delBook(book.id)
       this.createBook(book)
     },
