@@ -12,62 +12,93 @@
 <script>
 import Book from './Book.vue'
 
+const storage = require('electron-json-storage')
+
+const defaultBooks = [
+  {
+    id: 1,
+    tag: 1,
+    title: 'ナポレオン',
+    problems: [
+      {
+        text: 'ナポレオンの出身国は？',
+        answer: 'フランス',
+        stats: { OK: 1, NG: 2 }
+      }
+    ]
+  },
+  {
+    id: 2,
+    tag: 1,
+    title: 'フランス革命',
+    problems: [
+      {
+        text: 'フランス革命の発端は何監獄への襲撃',
+        answer: 'バスティーユ',
+        stats: { 'OK': 0, 'NG': 0 }
+      }
+    ]
+  }
+]
+
 export default {
   name: 'Shelf',
   components: { Book },
   data () {
     return {
-      books: [
-        {
-          id: 1,
-          tag: 1,
-          title: 'ナポレオン',
-          problems: [
-            {
-              text: 'ナポレオンの出身国は？',
-              answer: 'フランス',
-              stats: { OK: 1, NG: 2 }
-            }
-          ]
-        },
-        {
-          id: 2,
-          tag: 1,
-          title: 'フランス革命',
-          problems: [
-            {
-              text: 'フランス革命の発端は何監獄への襲撃',
-              answer: 'バスティーユ',
-              stats: { OK: 0, NG: 0 }
-            }
-          ]
-        },
-        {
-          id: 2,
-          tag: 1,
-          title: 'フランス革命',
-          problems: [
-            {
-              text: 'フランス革命の発端は何監獄への襲撃',
-              answer: 'バスティーユ',
-              stats: { OK: 0, NG: 0 }
-            }
-          ]
-        },
-        {
-          id: 2,
-          tag: 1,
-          title: 'フランス革命',
-          problems: [
-            {
-              text: 'フランス革命の発端は何監獄への襲撃',
-              answer: 'バスティーユ',
-              stats: { OK: 0, NG: 0 }
-            }
-          ]
-        }
-      ]
+      books: []
     }
+  },
+  methods: {
+    getNewId: function () {
+      if (this.books.length === 0) {
+        return 0
+      }
+      return Math.max.apply(null, this.books.map(b => b.id)) + 1
+    },
+    setDefault: function () {
+      for (const bookIdx in defaultBooks) {
+        const book = defaultBooks[bookIdx]
+        const storageName = `book${bookIdx}`
+
+        storage.set(storageName, book, err => {
+          if (err) throw err
+        })
+      }
+    },
+    getAllBook: function () {
+      storage.getAll((err, books) => {
+        if (err) throw err
+        this.books = books
+      })
+    },
+    createBook: function (book, cb) {
+      storage.set(`book${book.id}`, book, err => {
+        if (err) throw err
+        this.books.push(book)
+      })
+    },
+    delBook: function (bookId) {
+      storage.remove(`book${bookId}`, err => {
+        if (err) throw err
+        this.books = this.books.filter(b => b.id === bookId)
+      })
+    },
+    updateBook: function (book, idx) {
+      this.delBook(book.id)
+      this.createBook(book)
+    },
+    clearShelf: function () {
+      storage.clear(err => {
+        if (err) throw err
+        this.books = []
+      })
+    }
+  },
+  mounted: function () {
+    this.clearShelf()
+    this.setDefault()
+    this.getAllBook()
   }
 }
 </script>
@@ -109,7 +140,7 @@ main {
   grid-area: main;
   background-color: #e0ffff;
   display: flex;
-  flex-wrap:wrap;
+  flex-wrap: wrap;
 }
 
 .btn-add-book {
