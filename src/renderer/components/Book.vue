@@ -27,8 +27,8 @@ export default {
     renamedEvent: function (renamed) {
       this.book.title = renamed
     },
-    getInformation: function (bookId) {
-      this.$router.push({name: 'book-detail', params: {id: bookId}})
+    getInformation: function () {
+      this.$router.push({name: 'book-detail', params: {book: this.book}})
     },
     deleteBook: function (bookId) {
     },

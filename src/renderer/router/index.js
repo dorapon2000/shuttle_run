@@ -11,9 +11,10 @@ export default new Router({
       component: require('@/components/Shelf').default
     },
     {
-      path: '/book/:id',
+      path: '/book',
       name: 'book-detail',
-      component: require('@/components/BookDetail').default
+      component: require('@/components/BookDetail').default,
+      props: true
     },
     {
       path: '*',
