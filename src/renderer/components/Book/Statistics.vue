@@ -6,7 +6,7 @@
 
 <script>
 import Chart from 'chart.js'
-import { SumOfOkAvg, OkAvg } from '../../share/stats.js'
+import { SumOfOkAvg, OkAvg } from '../../utils/stats.js'
 export default {
   name: 'BookStatistics',
   props: {
