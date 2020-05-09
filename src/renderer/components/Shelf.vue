@@ -1,7 +1,7 @@
 <template>
   <div id="wrapper">
     <aside>
-      <a href="#" class="btn-add-book" @click="createBook(null)">+</a>
+      <a href="#" class="btn-add-book" @click="createBook">+</a>
     </aside>
     <main>
       <Book v-for="book in books" :book="book" :key="book.id" @updated="updateBook"></Book>
@@ -41,17 +41,23 @@ export default {
         this.books = books
       })
     },
-    createBook: function (book) {
-      if (!book) {
-        book = templateBook
-      }
-      book.id = this.getNewId()
-      this.updateBook(book)
-    },
-    updateBook: function (book) {
-      storage.set(`book${book.id}`, book, err => {
+    setStorage: function (id, data) {
+      storage.set(`book${id}`, data, err => {
         if (err) throw err
       })
+    },
+    createBook: function () {
+      // generate from template
+      let newBook = {...templateBook}
+      newBook.id = this.getNewId()
+      this.setStorage(newBook.id, newBook)
+      // add book to books(Vue's data)
+      // parse books to Array
+      let added = Object.values(this.books)
+      added.push(newBook)
+      // parse books(Array) to books(Object)
+      const reduced = added.reduce((val, data) => { return [ ...val, data ] }, {})
+      this.books = reduced
     },
     delBook: function (bookId) {
       storage.remove(`book${bookId}`, err => {
