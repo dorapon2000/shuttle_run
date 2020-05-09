@@ -4,7 +4,7 @@
       <a href="#" class="btn-add-book" @click="createBook">+</a>
     </aside>
     <main>
-      <Book v-for="book in books" :book="book" :key="book.id" @updated="updateBook"></Book>
+      <Book v-for="book in books" :book="book" :key="book.id" @updated="updateBook" @deleted="delBook"></Book>
     </main>
   </div>
 </template>
@@ -62,7 +62,7 @@ export default {
     delBook: function (bookId) {
       storage.remove(`book${bookId}`, err => {
         if (err) throw err
-        this.books = this.books.filter(b => b.id === bookId)
+        this.books = Object.values(this.books).filter(b => b.id !== bookId)
       })
     },
     clearShelf: function () {
