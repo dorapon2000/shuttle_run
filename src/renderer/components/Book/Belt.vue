@@ -1,7 +1,7 @@
 <template>
-  <div class="divBookTitle" @click="this.changeMode" @keyup.enter="rename()">
+  <div class="divBookTitle" @click="this.changeMode" @keydown.enter="rename">
     <span v-if="!this.isUpdate">{{getTitle}}</span>
-    <input class="inputUpdatedName" type="text" v-model="newName" v-if="this.isUpdate" placeholder="名前を入力してください" @blur="rename()">
+    <input class="inputUpdatedName" type="text" v-model="newName" v-if="this.isUpdate" placeholder="名前を入力してください" @blur="cancelRename">
   </div>
 </template>
 
@@ -23,9 +23,15 @@ export default {
   methods: {
     changeMode: function () {
       this.isUpdate = true
+      this.newName = this.title
     },
-    rename: function () {
+    rename: function (event) {
+      if (event.keyCode !== 13) return
       this.$emit('renamed', this.newName)
+      this.isUpdate = false
+    },
+    cancelRename: function () {
+      this.newName = ''
       this.isUpdate = false
     }
   },
