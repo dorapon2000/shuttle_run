@@ -30,8 +30,9 @@ export default {
   },
   methods: {
     getNewId: function () {
-      if (this.books.length === 0) {
-        return 0
+      let booksValues = Object.values(this.books)
+      if (this.books.length === 0 || !booksValues || booksValues.length === 0) {
+        return 1
       }
       return (Object.values(this.books).reduce((a, b) => { return a.id > b.id ? a : b })).id + 1
     },
