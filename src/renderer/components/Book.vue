@@ -26,6 +26,7 @@ export default {
   methods: {
     renamedEvent: function (renamed) {
       this.book.title = renamed
+      this.$emit('updated', this.book)
     },
     getInformation: function () {
       this.$router.push({name: 'book-detail', params: {book: this.book}})
