@@ -32,6 +32,7 @@ export default {
       this.$router.push({name: 'book-detail', params: {book: this.book}})
     },
     deleteBook: function (bookId) {
+      this.$emit('deleted', this.book.id)
     },
     cloneBook: function (bookId) {
     }
