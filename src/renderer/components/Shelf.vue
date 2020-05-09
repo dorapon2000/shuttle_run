@@ -59,6 +59,11 @@ export default {
       const reduced = added.reduce((val, data) => { return [ ...val, data ] }, {})
       this.books = reduced
     },
+    updateBook: function (book) {
+      this.setStorage(book.id, book)
+      let updatedBook = Object.values(this.books).filter(a => { return a.id === book.id })
+      updatedBook[0] = book
+    },
     delBook: function (bookId) {
       storage.remove(`book${bookId}`, err => {
         if (err) throw err
