@@ -14,55 +14,12 @@ import Book from './Book.vue'
 
 const storage = require('electron-json-storage')
 
-const defaultBooks = [
-  {
-    id: 1,
-    tag: 1,
-    title: 'ナポレオン',
-    tryCount: 3,
-    problems: [
-      {
-        id: 1,
-        text: 'ナポレオンの出身国は？',
-        answer: 'フランス',
-        stats: { OK: 1, NG: 2 }
-      },
-      {
-        id: 2,
-        text: 'ナポレオンの生まれた島は？',
-        answer: 'コルシカ島',
-        stats: { OK: 2, NG: 1 }
-      },
-      {
-        id: 4,
-        text: 'ナポレオンの死んだ島は？',
-        answer: 'セントヘレナ島',
-        stats: { OK: 1, NG: 1 }
-      }
-    ]
-  },
-  {
-    id: 2,
-    tag: 1,
-    title: 'フランス革命',
-    tryCount: 0,
-    problems: [
-      {
-        id: 3,
-        text: 'フランス革命の発端は何監獄への襲撃',
-        answer: 'バスティーユ',
-        stats: { 'OK': 0, 'NG': 0 }
-      }
-    ]
-  }
-]
 const templateBook = {
   id: null,
   tag: 1,
   title: '',
   problems: []
 }
-
 export default {
   name: 'Shelf',
   components: { Book },
@@ -77,16 +34,6 @@ export default {
         return 0
       }
       return (Object.values(this.books).reduce((a, b) => { return a.id > b.id ? a : b })).id + 1
-    },
-    setDefault: function () {
-      for (const bookIdx in defaultBooks) {
-        const book = defaultBooks[bookIdx]
-        const storageName = `book${bookIdx}`
-
-        storage.set(storageName, book, err => {
-          if (err) throw err
-        })
-      }
     },
     getAllBook: function () {
       storage.getAll((err, books) => {
@@ -121,9 +68,6 @@ export default {
   },
   mounted: function () {
     this.getAllBook()
-    if (Object.values(this.books).length === 0) {
-      this.setDefault()
-    }
   }
 }
 </script>
