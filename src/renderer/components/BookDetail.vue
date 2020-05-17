@@ -51,18 +51,18 @@ export default {
 .btnGameStart {
   display: inline-block;
   text-align: center;
-	width: 19%;
-	padding: 0.8em;
-	text-decoration: none;
-	color: rgb(0, 11, 114);
-	background: rgb(205, 231, 252);
-	border:1px solid rgb(0, 11, 114);
+  width: 19%;
+  padding: 0.8em;
+  text-decoration: none;
+  color: rgb(0, 11, 114);
+  background: rgb(205, 231, 252);
+  border:1px solid rgb(0, 11, 114);
 }
 .btnGameStart:hover {
-	 background: rgb(0, 11, 114);
-         color: rgb(205, 231, 252);
-	 cursor: pointer;
-	 text-decoration: none;
+  background: rgb(0, 11, 114);
+  color: rgb(205, 231, 252);
+  cursor: pointer;
+  text-decoration: none;
 }
 .stats-belt {
   padding: 0px 20px 20px 10px;
@@ -89,6 +89,5 @@ export default {
   margin-left: 10px;
   width: 25%;
 }
-
 
 </style>
