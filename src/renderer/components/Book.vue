@@ -31,10 +31,11 @@ export default {
     getInformation: function () {
       this.$router.push({name: 'book-detail', params: {book: this.book}})
     },
-    deleteBook: function (bookId) {
+    deleteBook: function () {
       this.$emit('deleted', this.book.id)
     },
-    cloneBook: function (bookId) {
+    cloneBook: function () {
+      this.$emit('cloned', this.book)
     }
   }
 }

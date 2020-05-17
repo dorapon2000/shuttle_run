@@ -4,16 +4,15 @@
       <a href="#" class="btn-add-book" @click="createBook">+</a>
     </aside>
     <main>
-      <Book v-for="book in books" :book="book" :key="book.id" @updated="updateBook" @deleted="delBook"></Book>
+      <Book v-for="book in books" :book="book" :key="book.id" @cloned="cloneBook" @updated="updateBook" @deleted="delBook"></Book>
     </main>
   </div>
 </template>
 
 <script>
 import Book from './Book.vue'
-
+import { deepCopyJSON } from '../utils/manipuleteObj'
 const storage = require('electron-json-storage')
-
 const templateBook = {
   id: null,
   tag: 1,
@@ -34,7 +33,31 @@ export default {
       if (this.books.length === 0 || !booksValues || booksValues.length === 0) {
         return 1
       }
-      return (Object.values(this.books).reduce((a, b) => { return a.id > b.id ? a : b })).id + 1
+      return (booksValues.reduce((a, b) => { return a.id > b.id ? a : b })).id + 1
+    },
+    getNewCardId: function () {
+      let booksValues = Object.values(this.books)
+      let beginFrom = 0
+      if (this.books.length === 0 || !booksValues || booksValues.length === 0) {
+        beginFrom = 1
+      } else {
+        let maxBook = booksValues.reduce((a, b) => { return this.getMaxCardIdInBook(a) > this.getMaxCardIdInBook(b) ? a : b })
+        beginFrom = maxBook ? this.getMaxCardIdInBook(maxBook) + 1 : 1
+      }
+      return beginFrom
+    },
+    getMaxCardIdInBook: function (book) {
+      let maxCard = book.problems.reduce((a, b) => {
+        return a.id > b.id ? a : b
+      })
+      return maxCard ? maxCard.id : 0
+    },
+    renumberingCards: function (cardList) {
+      let beginFrom = this.getNewCardId()
+      for (let index = 0; index < cardList.length; index++) {
+        cardList[index].id = beginFrom++
+      }
+      return cardList
     },
     getAllBook: function () {
       storage.getAll((err, books) => {
@@ -47,9 +70,9 @@ export default {
         if (err) throw err
       })
     },
-    createBook: function () {
+    createBook: function (clone) {
       // generate from template
-      let newBook = {...templateBook}
+      const newBook = clone.id ? clone : {...deepCopyJSON(templateBook)}
       newBook.id = this.getNewId()
       this.setStorage(newBook.id, newBook)
       // add book to books(Vue's data)
@@ -63,13 +86,20 @@ export default {
     updateBook: function (book) {
       this.setStorage(book.id, book)
       let updatedBook = Object.values(this.books).filter(a => { return a.id === book.id })
-      updatedBook[0] = book
+      updatedBook[0] = {...book}
     },
     delBook: function (bookId) {
       storage.remove(`book${bookId}`, err => {
         if (err) throw err
         this.books = Object.values(this.books).filter(b => b.id !== bookId)
       })
+    },
+    cloneBook: function (book) {
+      const cloneTo = {...deepCopyJSON(book)}
+      if (cloneTo.problems && cloneTo.problems.length > 0) {
+        cloneTo.problems = this.renumberingCards(cloneTo.problems)
+      }
+      this.createBook(cloneTo)
     },
     clearShelf: function () {
       storage.clear(err => {
