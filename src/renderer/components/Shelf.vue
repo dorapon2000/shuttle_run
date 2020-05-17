@@ -4,7 +4,7 @@
       <a href="#" class="btn-add-book" @click="createBook">+</a>
     </aside>
     <main>
-      <Book v-for="book in books" :book="book" :key="book.id" @updated="updateBook" @deleted="delBook"></Book>
+      <Book v-for="book in books" :book="book" :key="book.id" @cloned="cloneBook" @updated="updateBook" @deleted="delBook"></Book>
     </main>
   </div>
 </template>
@@ -47,9 +47,9 @@ export default {
         if (err) throw err
       })
     },
-    createBook: function () {
+    createBook: function (tmpBook) {
       // generate from template
-      let newBook = {...templateBook}
+      let newBook = tmpBook ? {...tmpBook} : {...templateBook}
       newBook.id = this.getNewId()
       this.setStorage(newBook.id, newBook)
       // add book to books(Vue's data)
@@ -70,6 +70,11 @@ export default {
         if (err) throw err
         this.books = Object.values(this.books).filter(b => b.id !== bookId)
       })
+    },
+    cloneBook: function (tmpBook) {
+      console.log(tmpBook)
+      this.createBook(tmpBook)
+      console.log(this.books)
     },
     clearShelf: function () {
       storage.clear(err => {

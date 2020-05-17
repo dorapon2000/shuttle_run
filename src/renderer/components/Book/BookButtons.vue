@@ -19,10 +19,10 @@ export default {
           this.$emit('request-information')
           break
         case 1:
-          this.$emit('request-clone', this.id)
+          this.$emit('request-clone')
           break
         case 2:
-          this.$emit('request-delete', this.id)
+          this.$emit('request-delete')
           break
         default:
           break
