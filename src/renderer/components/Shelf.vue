@@ -47,9 +47,9 @@ export default {
         if (err) throw err
       })
     },
-    createBook: function (tmpBook) {
+    createBook: function (clone) {
       // generate from template
-      let newBook = tmpBook ? {...tmpBook} : {...templateBook}
+      const newBook = clone.id ? {...clone} : {...templateBook}
       newBook.id = this.getNewId()
       this.setStorage(newBook.id, newBook)
       // add book to books(Vue's data)
@@ -63,7 +63,7 @@ export default {
     updateBook: function (book) {
       this.setStorage(book.id, book)
       let updatedBook = Object.values(this.books).filter(a => { return a.id === book.id })
-      updatedBook[0] = book
+      updatedBook[0] = {...book}
     },
     delBook: function (bookId) {
       storage.remove(`book${bookId}`, err => {
@@ -71,10 +71,8 @@ export default {
         this.books = Object.values(this.books).filter(b => b.id !== bookId)
       })
     },
-    cloneBook: function (tmpBook) {
-      console.log(tmpBook)
-      this.createBook(tmpBook)
-      console.log(this.books)
+    cloneBook: function (book) {
+      this.createBook(book)
     },
     clearShelf: function () {
       storage.clear(err => {
