@@ -7,7 +7,7 @@ export function SumOfOkAvg (problems) {
     const problem = problems[index]
     result += OkAvg(problem)
   }
-  return result / problems.length
+  return Math.round(result / problems.length)
 }
 
 export function OkAvg (problem) {
