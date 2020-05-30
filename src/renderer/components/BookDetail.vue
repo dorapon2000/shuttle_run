@@ -10,8 +10,8 @@
       <span class="correctRate">正答率：{{sumOfOkAvg}}</span>
     </div>
     <div class="newProblem">
-      <input class="newProblemTextForm" type="text" name="newProblemText" placeholder="新しい問題文を書いてエンター">
-      <input class="newProblemAnswerForm" type="text" name="newProblemAnswer" placeholder="その答え">
+      <input class="newProblemTextForm" type="text" v-model="newProblemText" placeholder="新しい問題文を書いてエンター" @keydown.enter="addCard">
+      <input class="newProblemAnswerForm" type="text" v-model="newProblemAnswer" placeholder="その答え" @keydown.enter="addCard">
     </div>
     <Card v-for="card in book.problems" :card="card" :key="card.id"></Card>
   </div>
@@ -27,8 +27,79 @@ export default {
   props: ['book'],
   data () {
     return {
-      sumOfOkAvg: SumOfOkAvg(this.book.problems)
+      sumOfOkAvg: SumOfOkAvg(this.book.problems),
+      newProblemText: '',
+      newProblemAnswer: ''
     }
+  },
+  methods: {
+    addCard: function () {
+      if (this.newProblemText === '' || this.newProblemAnswer === '') return
+      const json = new JsonUtil(this.book)
+      json.getNewCardId((newCardId) => {
+        const newCard = {
+          id: newCardId,
+          text: this.newProblemText,
+          answer: this.newProblemAnswer,
+          stats: { OK: 0, NG: 0 }
+        }
+        this.book.problems.push(newCard)
+        json.addCard(newCard)
+      })
+      this.newProblemText = ''
+      this.newProblemAnswer = ''
+    },
+    delCard: function () {
+
+    }
+  }
+}
+
+class JsonUtil {
+  constructor (book) {
+    this.storage = require('electron-json-storage')
+    this.book = book
+  }
+
+  _updateBookInStorage () {
+    this.storage.set(`book${this.book.id}`, this.book, err => {
+      if (err) throw err
+    })
+  }
+
+  _getAllBooks (callback) {
+    this.storage.getAll((err, books) => {
+      if (err) throw err
+      callback(books)
+    })
+  }
+
+  addCard (card) {
+    this.book.problems.push(card)
+    this._updateBookInStorage()
+  }
+
+  getNewCardId (callback) {
+    return this._getAllBooks((books) => {
+      let booksValues = Object.values(books)
+      let newCardId = 0
+      if (books.length === 0 || !booksValues || booksValues.length === 0) {
+        newCardId = 1
+      } else {
+        let maxBook = booksValues.reduce((a, b) => { return this._getMaxCardIdInBook(a) > this._getMaxCardIdInBook(b) ? a : b })
+        newCardId = maxBook ? this._getMaxCardIdInBook(maxBook) + 1 : 1
+      }
+      callback(newCardId)
+    })
+  }
+
+  _getMaxCardIdInBook (book) {
+    if (book.problems.length === 0) return 0
+
+    let maxCard = book.problems.reduce((a, b) => {
+      return a.id > b.id ? a : b
+    })
+    return maxCard ? maxCard.id : 0
   }
 }
 </script>
