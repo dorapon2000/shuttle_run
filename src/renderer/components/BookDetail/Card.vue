@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-      <button class="btnCardDelete" @click="request(0)"><i class="far fa-trash-alt "></i></button>
+      <button class="btnCardDelete" @click="delCard"><i class="far fa-trash-alt "></i></button>
       <div class="cardText">{{card.text}}</div>
       <div class="cardAnswer">{{card.answer}}</div>
       <div class="cardCorrectAnswer">{{this.correctRate()}} %</div>
@@ -18,6 +18,9 @@ export default {
   methods: {
     correctRate: function () {
       return Math.round(this.card.stats.OK / (this.card.stats.OK + this.card.stats.NG) * 100)
+    },
+    delCard: function () {
+      this.$emit('deleted', this.card.id)
     }
   }
 }

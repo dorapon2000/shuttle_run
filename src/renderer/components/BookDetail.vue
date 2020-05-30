@@ -13,7 +13,7 @@
       <input class="newProblemTextForm" type="text" v-model="newProblemText" placeholder="新しい問題文を書いてエンター" @keydown.enter="addCard">
       <input class="newProblemAnswerForm" type="text" v-model="newProblemAnswer" placeholder="その答え" @keydown.enter="addCard">
     </div>
-    <Card v-for="card in book.problems" :card="card" :key="card.id"></Card>
+    <Card v-for="card in book.problems" :card="card" :key="card.id" @deleted="delCard"></Card>
   </div>
 </template>
 
@@ -49,8 +49,10 @@ export default {
       this.newProblemText = ''
       this.newProblemAnswer = ''
     },
-    delCard: function () {
-
+    delCard: function (cardId) {
+      this.book.problems = this.book.problems.filter(c => c.id !== cardId)
+      const json = new JsonUtil(this.book)
+      json.delCard(cardId)
     }
   }
 }
@@ -100,6 +102,11 @@ class JsonUtil {
       return a.id > b.id ? a : b
     })
     return maxCard ? maxCard.id : 0
+  }
+
+  delCard (cardId) {
+    this.book.problems = this.book.problems.filter(c => c.id !== cardId)
+    this._updateBookInStorage(this.book)
   }
 }
 </script>
