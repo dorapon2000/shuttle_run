@@ -13,7 +13,7 @@
       <input class="newProblemTextForm" type="text" v-model="newProblemText" placeholder="新しい問題文を書いてエンター" @keydown.enter="addCard">
       <input class="newProblemAnswerForm" type="text" v-model="newProblemAnswer" placeholder="その答え" @keydown.enter="addCard">
     </div>
-    <Card v-for="card in book.problems" :card="card" :key="card.id" @deleted="delCard"></Card>
+    <Card v-for="card in book.problems" :card="card" :key="card.id" @deleted="delCard" @updated="updateCard"></Card>
   </div>
 </template>
 
@@ -54,6 +54,9 @@ export default {
       this.book.problems = this.book.problems.filter(c => c.id !== cardId)
       const json = new JsonUtil(this.book)
       json.delCard(cardId)
+    updateCard: function (card) {
+      const json = new JsonUtil()
+      json.updateStorage(this.book)
     }
   }
 }
@@ -64,8 +67,8 @@ class JsonUtil {
     this.book = deepCopyJSON(book)
   }
 
-  _updateBookInStorage () {
-    this.storage.set(`book${this.book.id}`, this.book, err => {
+  updateStorage (book) {
+    this.storage.set(`book${book.id}`, book, err => {
       if (err) throw err
     })
   }
