@@ -20,6 +20,7 @@
 <script>
 import Card from './BookDetail/Card.vue'
 import { SumOfOkAvg } from '../utils/stats.js'
+import { deepCopyJSON } from '../utils/manipuleteObj'
 
 export default {
   name: 'BookDetail',
@@ -60,7 +61,7 @@ export default {
 class JsonUtil {
   constructor (book) {
     this.storage = require('electron-json-storage')
-    this.book = book
+    this.book = deepCopyJSON(book)
   }
 
   _updateBookInStorage () {
