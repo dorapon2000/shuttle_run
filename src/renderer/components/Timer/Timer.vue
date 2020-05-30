@@ -31,7 +31,6 @@ export default {
       this.countDown()
     },
     countDown: function () {
-      console.log(this.lefttime)
       this.timeManager = setTimeout(() => {
         this.lefttime--
         if (this.lefttime > 0) {

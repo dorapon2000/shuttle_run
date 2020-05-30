@@ -58,17 +58,6 @@ export default {
     }
   },
   methods: {
-    testCode: function () {
-      this.book = {
-        title: 'テスト問題',
-        problems: [
-          {id: 12, text: 'hoge', answer: 'hogehoge', stats: {OK: 0, NG: 0}},
-          {id: 13, text: 'fuga', answer: 'hogehoge', stats: {OK: 0, NG: 0}},
-          {id: 14, text: 'hogehoge', answer: 'hogehoge', stats: {OK: 0, NG: 0}},
-          {id: 15, text: 'fugafuga', answer: 'hogehoge', stats: {OK: 0, NG: 0}}
-        ]
-      }
-    },
     showAnswer: function () {
       this.currentAnswer = this.book.problems[this.examOrder[this.currentIndex]].answer
     },
@@ -97,7 +86,6 @@ export default {
     }
   },
   mounted: function () {
-    this.testCode()
     for (let index = 0; index < this.book.problems.length; index++) {
       this.examOrder.push(index)
     }
