@@ -3,7 +3,7 @@
     <router-link to="/">戻る</router-link>
     <div>
       <h1 class="title">{{book.title}}</h1>
-      <router-link to="/" class="btnGameStart">問題を解く</router-link>
+      <router-link :to="{name:'exam', params:{book}}" class="btnGameStart">問題を解く</router-link>
     </div>
     <div class="stats-belt">
       <span class="tryCount">回数：{{book.tryCount}}</span>

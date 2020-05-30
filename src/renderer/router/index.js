@@ -17,6 +17,12 @@ export default new Router({
       props: true
     },
     {
+      path: '/examination',
+      name: 'exam',
+      component: require('@/components/Examination').default,
+      props: true
+    },
+    {
       path: '*',
       redirect: '/'
     }
