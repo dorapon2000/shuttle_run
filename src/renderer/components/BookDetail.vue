@@ -20,7 +20,6 @@
 <script>
 import Card from './BookDetail/Card.vue'
 import { SumOfOkAvg } from '../utils/stats.js'
-import { deepCopyJSON } from '../utils/manipuleteObj'
 
 export default {
   name: 'BookDetail',
@@ -36,24 +35,27 @@ export default {
   methods: {
     addCard: function () {
       if (this.newProblemText === '' || this.newProblemAnswer === '') return
-      const json = new JsonUtil(this.book)
+      const json = new JsonUtil()
+      const newProblemText = this.newProblemText
+      const newProblemAnswer = this.newProblemAnswer
       json.getNewCardId((newCardId) => {
         const newCard = {
           id: newCardId,
-          text: this.newProblemText,
-          answer: this.newProblemAnswer,
+          text: newProblemText,
+          answer: newProblemAnswer,
           stats: { OK: 0, NG: 0 }
         }
         this.book.problems.push(newCard)
-        json.addCard(newCard)
+        json.updateStorage(this.book)
       })
       this.newProblemText = ''
       this.newProblemAnswer = ''
     },
     delCard: function (cardId) {
       this.book.problems = this.book.problems.filter(c => c.id !== cardId)
-      const json = new JsonUtil(this.book)
-      json.delCard(cardId)
+      const json = new JsonUtil()
+      json.updateStorage(this.book)
+    },
     updateCard: function (card) {
       const json = new JsonUtil()
       json.updateStorage(this.book)
@@ -62,9 +64,8 @@ export default {
 }
 
 class JsonUtil {
-  constructor (book) {
+  constructor () {
     this.storage = require('electron-json-storage')
-    this.book = deepCopyJSON(book)
   }
 
   updateStorage (book) {
@@ -78,11 +79,6 @@ class JsonUtil {
       if (err) throw err
       callback(books)
     })
-  }
-
-  addCard (card) {
-    this.book.problems.push(card)
-    this._updateBookInStorage()
   }
 
   getNewCardId (callback) {
@@ -106,11 +102,6 @@ class JsonUtil {
       return a.id > b.id ? a : b
     })
     return maxCard ? maxCard.id : 0
-  }
-
-  delCard (cardId) {
-    this.book.problems = this.book.problems.filter(c => c.id !== cardId)
-    this._updateBookInStorage(this.book)
   }
 }
 </script>
