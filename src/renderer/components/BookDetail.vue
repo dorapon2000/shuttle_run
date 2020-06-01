@@ -10,10 +10,10 @@
       <span class="correctRate">正答率：{{sumOfOkAvg}}</span>
     </div>
     <div class="newProblem">
-      <input class="newProblemTextForm" type="text" name="newProblemText" placeholder="新しい問題文を書いてエンター">
-      <input class="newProblemAnswerForm" type="text" name="newProblemAnswer" placeholder="その答え">
+      <input class="newProblemTextForm" type="text" v-model="newProblemText" placeholder="新しい問題文を書いてエンター" @keydown.enter="addCard">
+      <input class="newProblemAnswerForm" type="text" v-model="newProblemAnswer" placeholder="その答え" @keydown.enter="addCard">
     </div>
-    <Card v-for="card in book.problems" :card="card" :key="card.id"></Card>
+    <Card v-for="card in book.problems" :card="card" :key="card.id" @deleted="delCard" @updated="updateCard"></Card>
   </div>
 </template>
 
@@ -27,8 +27,81 @@ export default {
   props: ['book'],
   data () {
     return {
-      sumOfOkAvg: SumOfOkAvg(this.book.problems)
+      sumOfOkAvg: SumOfOkAvg(this.book.problems),
+      newProblemText: '',
+      newProblemAnswer: ''
     }
+  },
+  methods: {
+    addCard: function () {
+      if (this.newProblemText === '' || this.newProblemAnswer === '') return
+      const json = new JsonUtil()
+      const newProblemText = this.newProblemText
+      const newProblemAnswer = this.newProblemAnswer
+      json.getNewCardId((newCardId) => {
+        const newCard = {
+          id: newCardId,
+          text: newProblemText,
+          answer: newProblemAnswer,
+          stats: { OK: 0, NG: 0 }
+        }
+        this.book.problems.push(newCard)
+        json.updateStorage(this.book)
+      })
+      this.newProblemText = ''
+      this.newProblemAnswer = ''
+    },
+    delCard: function (cardId) {
+      this.book.problems = this.book.problems.filter(c => c.id !== cardId)
+      const json = new JsonUtil()
+      json.updateStorage(this.book)
+    },
+    updateCard: function (card) {
+      const json = new JsonUtil()
+      json.updateStorage(this.book)
+    }
+  }
+}
+
+class JsonUtil {
+  constructor () {
+    this.storage = require('electron-json-storage')
+  }
+
+  updateStorage (book) {
+    this.storage.set(`book${book.id}`, book, err => {
+      if (err) throw err
+    })
+  }
+
+  _getAllBooks (callback) {
+    this.storage.getAll((err, books) => {
+      if (err) throw err
+      callback(books)
+    })
+  }
+
+  getNewCardId (callback) {
+    return this._getAllBooks((books) => {
+      let booksValues = Object.values(books)
+      let newCardId = 0
+      if (books.length === 0 || !booksValues || booksValues.length === 0) {
+        newCardId = 1
+      } else {
+        let maxBook = booksValues.reduce((a, b) => { return this._getMaxCardIdInBook(a) > this._getMaxCardIdInBook(b) ? a : b })
+        newCardId = maxBook ? this._getMaxCardIdInBook(maxBook) + 1 : 1
+      }
+      callback(newCardId)
+    })
+  }
+
+  _getMaxCardIdInBook (book) {
+    if (book.problems.length === 0) return 0
+
+    let maxCard = book.problems.reduce((a, b) => {
+      return a.id > b.id ? a : b
+    })
+    return maxCard ? maxCard.id : 0
   }
 }
 </script>
