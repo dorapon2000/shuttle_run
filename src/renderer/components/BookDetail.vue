@@ -7,7 +7,7 @@
     </div>
     <div class="stats-belt">
       <span class="tryCount">回数：{{book.tryCount}}</span>
-      <span class="correctRate">正答率：{{sumOfOkAvg}}</span>
+      <span class="correctRate">正答率：{{sumOfOkAvg}} %</span>
     </div>
     <div class="newProblem">
       <input class="newProblemTextForm" type="text" v-model="newProblemText" placeholder="新しい問題文を書いてエンター" @keydown.enter="addCard">

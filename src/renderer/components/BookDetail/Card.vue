@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import { OkAvg } from '../../utils/stats.js'
+
 export default {
   name: 'Card',
   props: {
@@ -48,7 +50,7 @@ export default {
       this.isAnswerEditing = false
     },
     correctRate: function () {
-      return Math.round(this.card.stats.OK / (this.card.stats.OK + this.card.stats.NG) * 100)
+      return OkAvg(this.card)
     },
     delCard: function () {
       this.$emit('deleted', this.card.id)
