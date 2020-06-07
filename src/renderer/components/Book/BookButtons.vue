@@ -1,8 +1,8 @@
 <template>
   <div class="divBookButtons">
-    <button @click="request(0)"><i class="fas fa-info-circle"></i></button>
-    <button @click="request(1)"><i class="far fa-copy"></i></button>
-    <button @click="request(2)"><i class="fas fa-backspace"></i></button>
+    <button @click="request(0)" class="tooltip"><i class="fas fa-info-circle"></i><span class="tooltiptext">問題の詳細ページ</span></button>
+    <button @click="request(1)" class="tooltip"><i class="far fa-copy"></i><span class="tooltiptext">問題のコピー</span></button>
+    <button @click="request(2)" class="tooltip"><i class="fas fa-backspace"></i><span class="tooltiptext">問題の削除</span></button>
   </div>  
 </template>
 
@@ -33,6 +33,7 @@ export default {
 </script>
 
 <style>
+@import url("../../assets/css/common.css");
 .divBookButtons {
   box-sizing: inherit;
   padding: 0 1em;
@@ -49,5 +50,9 @@ export default {
   background-color: whitesmoke;
   border: thistle 1px;
   border-radius: 3em;
+}
+.divBookButtons > button > .tooltiptext{
+  width: 13em;
+  left: -5em;
 }
 </style>
