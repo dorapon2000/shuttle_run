@@ -17,6 +17,7 @@ const templateBook = {
   id: null,
   tag: 1,
   title: '',
+  tryCount: 0,
   problems: []
 }
 export default {
