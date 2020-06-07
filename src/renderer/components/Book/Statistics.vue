@@ -1,7 +1,7 @@
 <template>
   <div class="bookStats">
-    <canvas v-if="isZero" canvas ref="canvasStats"></canvas>
-    <div v-else class="resultNone">
+    <canvas v-show="isZero" canvas ref="canvasStats"></canvas>
+    <div v-show="!isZero" class="resultNone">
       <i class="far fa-question-circle noneQuestion" ></i>
       <p class="noneMessage">
         問題を解くと正答率が表示されます
