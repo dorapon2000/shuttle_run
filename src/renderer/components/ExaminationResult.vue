@@ -44,9 +44,6 @@ export default {
     isCorrect: function (cardIndex) {
       for (let index = 0; index < this.examOrder.length; index++) {
         const order = this.examOrder[index]
-        console.log(`cardIndex:${cardIndex}`)
-        console.log(`order:${order}`)
-        console.log(`result[index]:${this.result[index]}`)
         if (order === cardIndex) {
           return this.result[index] === 1
         }

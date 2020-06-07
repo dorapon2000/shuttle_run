@@ -43,7 +43,8 @@ export default {
       currentIndex: 0,
       limitOfTime: 20,
       examOrder: [],
-      result: []
+      result: [],
+      evetManager: null
     }
   },
   props: {
@@ -62,17 +63,25 @@ export default {
       this.currentAnswer = this.book.problems[this.examOrder[this.currentIndex]].answer
     },
     submitResult: function (result) {
+      if (this.evetManager) {
+        return
+      }
+
       this.result[this.currentIndex] = result ? 1 : -1
       this.isAnswering = false
       this.showAnswer()
 
       if (this.currentIndex < this.result.length - 1) {
-        setTimeout(() => {
+        this.evetManager = setTimeout(() => {
           this.goNext()
+          clearTimeout(this.evetManager)
+          this.evetManager = null
         }, timeoutMilliSeconds)
       } else {
-        setTimeout(() => {
+        this.evetManager = setTimeout(() => {
           this.showTotal()
+          clearTimeout(this.evetManager)
+          this.evetManager = null
         }, timeoutMilliSeconds)
       }
     },
