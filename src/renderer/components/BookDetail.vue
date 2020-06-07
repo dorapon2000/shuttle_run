@@ -7,7 +7,7 @@
     </div>
     <div class="stats-belt">
       <span class="tryCount">回数：{{book.tryCount}}</span>
-      <span class="correctRate">正答率：{{sumOfOkAvg}}</span>
+      <span class="correctRate">正答率：{{sumOfOkAvg}} %</span>
       <div class="tooltip">
         <a href="#" class="statsReset tooltip" @click.prevent="resetStats"><i class="fas fa-undo fa-xs"></i></a>
         <span class="tooltiptext">統計データの初期化</span>
