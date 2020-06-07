@@ -8,6 +8,10 @@
     <div class="stats-belt">
       <span class="tryCount">回数：{{book.tryCount}}</span>
       <span class="correctRate">正答率：{{sumOfOkAvg}} %</span>
+      <div class="tooltip">
+        <a href="#" class="statsReset tooltip" @click.prevent="resetStats"><i class="fas fa-undo fa-xs"></i></a>
+        <span class="tooltiptext">統計データの初期化</span>
+      </div>
     </div>
     <div class="newProblem">
       <input class="newProblemTextForm" type="text" v-model="newProblemText" placeholder="新しい問題文を書いてエンター" @keydown.enter="addCard">
@@ -59,6 +63,16 @@ export default {
     updateCard: function (card) {
       const json = new JsonUtil()
       json.updateStorage(this.book)
+    },
+    resetStats: function () {
+      this.book.tryCount = 0
+      for (let i = 0; i < this.book.problems.length; i++) {
+        this.book.problems[i].OK = 0
+        this.book.problems[i].NG = 0
+      }
+
+      const json = new JsonUtil()
+      json.updateStorage(this.book)
     }
   }
 }
@@ -107,6 +121,7 @@ class JsonUtil {
 </script>
 
 <style scoped>
+@import url("../assets/css/common.css");
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
 
 .divBookDetail {
@@ -162,5 +177,17 @@ class JsonUtil {
   margin-left: 10px;
   width: 25%;
 }
-
+.statsReset {
+  display: inline-block;
+  color: deeppink;
+  background-color: white;
+  text-align: center;
+  vertical-align: middle;
+  margin-left: 5px;
+  padding: 0 4px;
+  border-style: solid;
+  border-width : 1px 1px 1px 1px;
+  border-radius: 4px;
+  border-color: lightgray;
+}
 </style>
