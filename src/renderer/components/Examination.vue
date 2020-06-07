@@ -66,12 +66,14 @@ export default {
       this.isAnswering = false
       this.showAnswer()
 
-      if (this.currentIndex < this.result.length) {
+      if (this.currentIndex < this.result.length - 1) {
         setTimeout(() => {
           this.goNext()
         }, timeoutMilliSeconds)
       } else {
-        this.showTotal()
+        setTimeout(() => {
+          this.showTotal()
+        }, timeoutMilliSeconds)
       }
     },
     goNext: function () {
@@ -82,7 +84,7 @@ export default {
       this.timer.startCount()
     },
     showTotal: function () {
-      this.$router.push()
+      this.$router.push({ name: 'examResult', params: {book: this.book, result: this.result, examOrder: this.examOrder} })
     }
   },
   mounted: function () {

@@ -23,6 +23,12 @@ export default new Router({
       props: true
     },
     {
+      path: '/examinationResult',
+      name: 'examResult',
+      component: require('@/components/ExaminationResult').default,
+      props: true
+    },
+    {
       path: '*',
       redirect: '/'
     }
