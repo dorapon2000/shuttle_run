@@ -8,7 +8,10 @@
     <div class="stats-belt">
       <span class="tryCount">回数：{{book.tryCount}}</span>
       <span class="correctRate">正答率：{{sumOfOkAvg}}</span>
-      <a href="#" class="statsReset" @click.prevent="resetStats"><i class="fas fa-undo fa-xs"></i></a>
+      <div class="tooltip">
+        <a href="#" class="statsReset tooltip" @click.prevent="resetStats"><i class="fas fa-undo fa-xs"></i></a>
+        <span class="tooltiptext">統計データの初期化</span>
+      </div>
     </div>
     <div class="newProblem">
       <input class="newProblemTextForm" type="text" v-model="newProblemText" placeholder="新しい問題文を書いてエンター" @keydown.enter="addCard">
@@ -118,6 +121,7 @@ class JsonUtil {
 </script>
 
 <style scoped>
+@import url("../assets/css/common.css");
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
 
 .divBookDetail {
