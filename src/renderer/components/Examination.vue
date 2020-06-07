@@ -43,7 +43,8 @@ export default {
       currentIndex: 0,
       limitOfTime: 20,
       examOrder: [],
-      result: []
+      result: [],
+      evetManager: null
     }
   },
   props: {
@@ -62,16 +63,26 @@ export default {
       this.currentAnswer = this.book.problems[this.examOrder[this.currentIndex]].answer
     },
     submitResult: function (result) {
+      if (this.evetManager) {
+        return
+      }
+
       this.result[this.currentIndex] = result ? 1 : -1
       this.isAnswering = false
       this.showAnswer()
 
-      if (this.currentIndex < this.result.length) {
-        setTimeout(() => {
+      if (this.currentIndex < this.result.length - 1) {
+        this.evetManager = setTimeout(() => {
           this.goNext()
+          clearTimeout(this.evetManager)
+          this.evetManager = null
         }, timeoutMilliSeconds)
       } else {
-        this.showTotal()
+        this.evetManager = setTimeout(() => {
+          this.showTotal()
+          clearTimeout(this.evetManager)
+          this.evetManager = null
+        }, timeoutMilliSeconds)
       }
     },
     goNext: function () {
@@ -82,7 +93,7 @@ export default {
       this.timer.startCount()
     },
     showTotal: function () {
-      this.$router.push()
+      this.$router.push({ name: 'examResult', params: {book: this.book, result: this.result, examOrder: this.examOrder} })
     }
   },
   mounted: function () {
