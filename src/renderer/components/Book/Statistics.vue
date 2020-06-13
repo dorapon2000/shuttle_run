@@ -31,10 +31,17 @@ export default {
     SumOfNgAvg: SumOfNgAvg
   },
   computed: {
+    /**
+     * 回答回数が0かを判定
+     */
     isZero: function (params) {
       return this.OkAvg + this.NgAvg === 0
     }
   },
+  /**
+   * 初期化処理
+   * chart.jsのcanvasの設定
+   */
   mounted: function () {
     const canvas = this.$refs.canvasStats
     canvas.height = 250

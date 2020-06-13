@@ -54,6 +54,9 @@ export default {
     book: Object
   },
   computed: {
+    /***
+     * 次の問題文を見せる
+     */
     nextProblem: function () {
       return this.book.problems[this.examOrder[this.currentIndex]]
     },
@@ -62,9 +65,19 @@ export default {
     }
   },
   methods: {
+    /***
+     * 答えを見せる
+     */
     showAnswer: function () {
       this.currentAnswer = this.book.problems[this.examOrder[this.currentIndex]].answer
     },
+    /***
+     * その問題の終了処理をする
+     * - 回答のチェック
+     * - タイマーのリセット
+     * - 答えを見せる
+     * - あれば次の問題へ
+     */
     submitResult: function (result) {
       if (this.evetManager) {
         return
@@ -88,6 +101,9 @@ export default {
         }, timeoutMilliSeconds)
       }
     },
+    /***
+     * 次の問題へ進む
+     */
     goNext: function () {
       this.currentAnswer = ''
       this.currentIndex++
@@ -95,6 +111,10 @@ export default {
       this.timer.resetCount()
       this.timer.startCount()
     },
+    /***
+     * 結果画面へ進む
+     * ExaminationResultへ問題と結果をわたす
+     */
     showTotal: function () {
       this.$router.push({
         name: 'examResult',

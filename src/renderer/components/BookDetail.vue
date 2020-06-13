@@ -38,6 +38,11 @@ export default {
     }
   },
   methods: {
+    /**
+     * カードの追加
+     * カード名がブランクの場合、実行しない
+     * ストレージに反映
+    */
     addCard: function () {
       if (this.newProblemText === '' || this.newProblemAnswer === '') return
       const json = new JsonUtil()
@@ -56,15 +61,27 @@ export default {
       this.newProblemText = ''
       this.newProblemAnswer = ''
     },
+    /**
+     * カードの削除
+     * ストレージに削除結果を反映
+     */
     delCard: function (cardId) {
       this.book.problems = this.book.problems.filter(c => c.id !== cardId)
       const json = new JsonUtil()
       json.updateStorage(this.book)
     },
+    /**
+     * カードの更新
+     * ストレージに更新結果を反映
+     */
     updateCard: function (card) {
       const json = new JsonUtil()
       json.updateStorage(this.book)
     },
+    /**
+     * テスト結果をリセット
+     * 全てのカードの成績をリセットし、ストレージに反映
+     */
     resetStats: function () {
       this.book.tryCount = 0
       for (let i = 0; i < this.book.problems.length; i++) {
@@ -77,6 +94,9 @@ export default {
     }
   },
   computed: {
+    /**
+     * 正解率を取得
+     */
     sumOfOkAvg: function () {
       return SumOfOkAvg(this.book.problems)
     }

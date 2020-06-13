@@ -51,6 +51,11 @@ export default {
     examOrder: Array
   },
   methods: {
+    /***
+     * 解いた問題が正解しているかの判定
+     * 正解したかはthis.resultに入っているが、どの問題の正解かという情報は
+     * examOrderとくみあわせないとわからないため
+     */
     isCorrect: function (cardIndex) {
       for (let index = 0; index < this.examOrder.length; index++) {
         const order = this.examOrder[index]
@@ -60,9 +65,16 @@ export default {
       }
       return false
     },
+    /***
+     * もう一度問題を解く
+     * ブラウザバック時にリザルト画面にもどりたくないためreplaceを使用
+     */
     retryExam: function () {
       this.$router.replace({name: 'exam', params: {book: this.book}})
     },
+    /***
+     * Statisticsで処理できるproblemsの形式にthis.resultを変換
+     */
     formatResultToProblems: function () {
       return [{
         stats: {

@@ -33,28 +33,52 @@ export default {
     }
   },
   methods: {
+    /***
+     * 問題文が編集中かそうでないかをスイッチする
+     */
     switchTextEditing: function () {
       this.isTextEditing = true
       this.newText = this.card.text
     },
+    /***
+     * 問題の解答が編集中かそうでないかをスイッチする
+     */
     switchAnswerEditing: function () {
       this.isAnswerEditing = true
       this.newAnswer = this.card.answer
     },
+    /***
+     * 問題文の編集を中断する
+     */
     cancelEditText: function () {
       this.newText = this.card.text
       this.isTextEditing = false
     },
+    /***
+     * 問題の解答の編集を中断する
+     */
     cancelEditAnswer: function () {
       this.newAnswer = this.card.answer
       this.isAnswerEditing = false
     },
+    /***
+     * カードの正解率（%）返す
+     * @return {number} カードの正答率（%）
+     */
     correctRate: function () {
       return OkAvg(this.card)
     },
+    /***
+     * カード削除のイベントリスナ
+     * 実際のカード削除は親でやる
+     */
     delCard: function () {
       this.$emit('deleted', this.card.id)
     },
+    /***
+     * カード内容更新のイベントリスナ
+     * 実際のカード更新は親でやる
+     */
     updateCard: function () {
       if (event.keyCode !== 13) return
       this.card.text = this.newText

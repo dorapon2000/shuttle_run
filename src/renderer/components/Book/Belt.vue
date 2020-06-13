@@ -21,25 +21,45 @@ export default {
     }
   },
   methods: {
+    /**
+     * タイトルの編集状態の変更
+     * - isUpdate
+     *     - 更新中かどうか
+     */
     changeMode: function () {
       this.isUpdate = true
       this.newName = this.title
     },
+    /**
+     * タイトルの変更
+     */
     rename: function (event) {
       if (event.keyCode !== 13) return
       this.$emit('renamed', this.newName)
       this.isUpdate = false
     },
+    /**
+     * タイトル変更の中止
+     */
     cancelRename: function () {
       this.newName = ''
       this.isUpdate = false
     }
   },
   computed: {
+    /**
+     * タイトル取得処理
+     * - タイトルが無い場合、No Nameを返却
+     */
+
     getTitle: function () {
       return this.title ? this.title : 'No Name'
     }
   },
+  /**
+   * 初期化処理
+   * - 編集中タイトル名の設定
+   */
   mounted: function () {
     this.newName = this.title
   }
