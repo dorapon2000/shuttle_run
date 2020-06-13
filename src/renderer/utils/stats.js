@@ -14,7 +14,7 @@ export function SumOfOkAvg (problems) {
 }
 
 export function OkAvg (problem) {
-  if (!problem.stats.OK || !problem.stats.NG || problem.stats.OK + problem.stats.NG === 0) {
+  if (problem.stats.OK + problem.stats.NG === 0) {
     return 0
   }
 
@@ -26,7 +26,7 @@ export function SumOfNgAvg (problems) {
 }
 
 export function NgAvg (problem) {
-  if (!problem.stats.OK || !problem.stats.NG || problem.stats.OK + problem.stats.NG === 0) {
+  if (problem.stats.OK + problem.stats.NG === 0) {
     return 0
   }
 
