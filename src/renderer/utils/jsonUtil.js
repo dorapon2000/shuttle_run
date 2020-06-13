@@ -3,12 +3,20 @@ export default class JsonUtil {
     this.storage = require('electron-json-storage')
   }
 
+  /***
+   * Bookのストレージを更新
+   * @param {Object} book - ストレージを更新したいBook
+   */
   updateStorage (book) {
     this.storage.set(`book${book.id}`, book, err => {
       if (err) throw err
     })
   }
 
+  /***
+   * 全Bookを取得
+   * @param {function} callback - 取得後に実行したいコールバック関数
+   */
   _getAllBooks (callback) {
     this.storage.getAll((err, books) => {
       if (err) throw err
@@ -16,6 +24,10 @@ export default class JsonUtil {
     })
   }
 
+  /***
+   * Card新規作成時のIDを決定する
+   * @param {function} callback - Card新規作成時に実行したいコールバック関数
+   */
   getNewCardId (callback) {
     return this._getAllBooks((books) => {
       let booksValues = Object.values(books)
@@ -30,6 +42,11 @@ export default class JsonUtil {
     })
   }
 
+  /***
+   * Bookに含まれるCardの中で最も大きいIDを取得
+   * @param {Object} book - Book
+   * @return {number} 全CardのIDの最大値
+   */
   _getMaxCardIdInBook (book) {
     if (book.problems.length === 0) return 0
 
