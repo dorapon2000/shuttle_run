@@ -1,7 +1,10 @@
 <template>
   <div class="divExamination">
     <header>
-      <router-link to="/">戻る</router-link>
+      <a @click="ceaseExam" id="linkCease" class="tooltip">
+        <i class="fas fa-angle-left"></i>
+        <span class="tooltiptext">中断して戻る</span>
+      </a>
       <div>
         <h1 class="title">{{book.title}}</h1>
         <count-timer ref="examTimer" :limitOfTime="limitOfTime"></count-timer>
@@ -121,6 +124,13 @@ export default {
           examOrder: this.examOrder
         }
       })
+    },
+    ceaseExam: function () {
+      const result = confirm(`テストを中断して詳細画面に戻ります。
+回答内容は保存されませんがよろしいですか？`)
+      if (result) {
+        this.$router.replace({name: 'book-detail', params: {book: this.book}})
+      }
     }
   },
   created: function () {
@@ -140,11 +150,21 @@ export default {
 </script>
 
 <style>
+#linkCease{
+  color: crimson;
+  font-size: 2em;
+}
+#linkCease:hover{
+  cursor: pointer;
+}
+#linkCease > .tooltiptext{
+  font-size: 0.5em;
+}
 .divExamination{
   position: relative;
   height: 100vh;
   width: 100vw;
-  padding: 10px;
+  padding: 60px;
   background-color: #e0ffff;
 }
 .title{

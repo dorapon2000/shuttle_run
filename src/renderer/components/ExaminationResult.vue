@@ -1,9 +1,15 @@
 <template>
   <div class="divExamination">
     <header>
-      <router-link to="/">戻る</router-link>
+      <link-to-top></link-to-top>
       <div>
-        <h1 class="title">{{book.title}}：回答結果</h1>
+        <h1 class="title">
+          {{book.title}}：回答結果
+          <span class="tooltip">
+            <i id="retry" class="fas fa-undo" @click="retryExam" ></i>
+            <span class="tooltiptext">再挑戦!!</span>
+          </span>
+        </h1>
       </div>
     </header>
     <main>
@@ -29,12 +35,14 @@
 </template>
 
 <script>
+import LinkToTop from './Link/LinkToIndex.vue'
 import BookStatistics from './Book/Statistics'
 import JsonUtil from '../utils/jsonUtil'
 
 export default {
   name: 'examResult',
   components: {
+    LinkToTop,
     BookStatistics
   },
   props: {
@@ -56,6 +64,13 @@ export default {
         }
       }
       return false
+    },
+    /***
+     * もう一度問題を解く
+     * ブラウザバック時にリザルト画面にもどりたくないためreplaceを使用
+     */
+    retryExam: function () {
+      this.$router.replace({name: 'exam', params: {book: this.book}})
     },
     /***
      * Statisticsで処理できるproblemsの形式にthis.resultを変換
@@ -87,11 +102,16 @@ export default {
 </script>
 
 <style>
+#retry{
+  margin-left: 1em;
+  color: chartreuse;
+}
+#retry:hover{
+  cursor: pointer;
+}
 .divExamination{
   position: relative;
-  height: 100vh;
-  width: 100vw;
-  padding: 10px;
+  padding: 60px;
   background-color: #e0ffff;
 }
 .divResultGraph {
@@ -99,13 +119,12 @@ export default {
     display: flex;
     align-items: center;
     width: 90vw;
-    height: 50vh;
     justify-content: space-between;
 }
 .cardList{
   margin: 0 auto;
   width: 90vw;
-  height: 30vh;
+  height: 20vh;
   overflow-y: scroll;
 }
 .divCard > span{
