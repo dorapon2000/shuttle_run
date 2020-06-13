@@ -30,6 +30,8 @@
 
 <script>
 import BookStatistics from './Book/Statistics'
+import JsonUtil from '../utils/jsonUtil'
+
 export default {
   name: 'examResult',
   components: {
@@ -64,18 +66,6 @@ export default {
 
     const json = new JsonUtil()
     json.updateStorage(this.book)
-  }
-}
-
-class JsonUtil {
-  constructor () {
-    this.storage = require('electron-json-storage')
-  }
-
-  updateStorage (book) {
-    this.storage.set(`book${book.id}`, book, err => {
-      if (err) throw err
-    })
   }
 }
 </script>
