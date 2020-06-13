@@ -96,13 +96,14 @@ export default {
       this.$router.push({ name: 'examResult', params: {book: this.book, result: this.result, examOrder: this.examOrder} })
     }
   },
-  mounted: function () {
+  created: function () {
     for (let index = 0; index < this.book.problems.length; index++) {
       this.examOrder.push(index)
     }
     this.examOrder = shuffleArray(this.examOrder)
     this.result = new Array(this.book.problems.length)
-
+  },
+  mounted: function () {
     this.$nextTick(function () {
       this.timer = this.$refs.examTimer
       this.timer.startCount()
