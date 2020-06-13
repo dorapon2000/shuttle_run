@@ -31,7 +31,6 @@ export default {
   props: ['book'],
   data () {
     return {
-      sumOfOkAvg: SumOfOkAvg(this.book.problems),
       newProblemText: '',
       newProblemAnswer: ''
     }
@@ -67,12 +66,17 @@ export default {
     resetStats: function () {
       this.book.tryCount = 0
       for (let i = 0; i < this.book.problems.length; i++) {
-        this.book.problems[i].OK = 0
-        this.book.problems[i].NG = 0
+        this.book.problems[i].stats.OK = 0
+        this.book.problems[i].stats.NG = 0
       }
 
       const json = new JsonUtil()
       json.updateStorage(this.book)
+    }
+  },
+  computed: {
+    sumOfOkAvg: function () {
+      return SumOfOkAvg(this.book.problems)
     }
   }
 }
