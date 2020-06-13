@@ -24,6 +24,10 @@ export default {
     }
   },
   methods: {
+    /**
+     * タイトル変更のイベント
+     * - Shelfの更新処理を呼び出す
+     */
     renamedEvent: function (renamed) {
       this.book.title = renamed
       this.$emit('updated', this.book)
@@ -31,9 +35,17 @@ export default {
     getInformation: function () {
       this.$router.push({name: 'book-detail', params: {book: this.book}})
     },
+    /**
+     * Book削除のイベント
+     * - ShelfのBook削除処理を呼び出す
+     */
     deleteBook: function () {
       this.$emit('deleted', this.book.id)
     },
+    /**
+     * Book複製のイベント
+     * - ShelfのBook複製処理を呼び出す
+     */
     cloneBook: function () {
       this.$emit('cloned', this.book)
     }

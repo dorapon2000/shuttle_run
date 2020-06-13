@@ -29,6 +29,11 @@ export default {
     }
   },
   methods: {
+    /**
+     * Book用の新規IDの採番
+     * - Bookが存在しなければ1を返却
+     * - 最大値 + 1を返却
+     */
     getNewId: function () {
       let booksValues = Object.values(this.books)
       if (this.books.length === 0 || !booksValues || booksValues.length === 0) {
@@ -36,6 +41,11 @@ export default {
       }
       return (booksValues.reduce((a, b) => { return a.id > b.id ? a : b })).id + 1
     },
+    /**
+     * カード用の新規IDの採番
+     * - Bookが存在しなければ、1を返却
+     * - Bookの中で一番大きいカードIDを検索し、最大値 + 1 を返却
+     */
     getNewCardId: function () {
       let booksValues = Object.values(this.books)
       let beginFrom = 0
@@ -47,54 +57,80 @@ export default {
       }
       return beginFrom
     },
+    /**
+     * Bookの中のカードIDの最大値を返却
+     */
     getMaxCardIdInBook: function (book) {
       let maxCard = book.problems.reduce((a, b) => {
         return a.id > b.id ? a : b
       })
       return maxCard ? maxCard.id : 0
     },
+    /**
+     * カードリストに対して再度カードIDを振り直す
+     * 主にBookのコピー時に使用
+     */
     renumberingCards: function (cardList) {
+      // 連番の開始値を取得し、順番にインクリメントする
       let beginFrom = this.getNewCardId()
       for (let index = 0; index < cardList.length; index++) {
         cardList[index].id = beginFrom++
       }
       return cardList
     },
+    /**
+     * ストレージからBookを取得し、設定する
+     */
     getAllBook: function () {
       storage.getAll((err, books) => {
         if (err) throw err
         this.books = books
       })
     },
+    /**
+     * ストレージにBookを保存する
+     */
     setStorage: function (id, data) {
       storage.set(`book${id}`, data, err => {
         if (err) throw err
       })
     },
+    /**
+     * Bookの作成
+     * - テンプレートをコピーし、新規ブックを作成
+     */
     createBook: function (clone) {
-      // generate from template
       const newBook = clone.id ? clone : {...deepCopyJSON(templateBook)}
       newBook.id = this.getNewId()
       this.setStorage(newBook.id, newBook)
-      // add book to books(Vue's data)
-      // parse books to Array
       let added = Object.values(this.books)
       added.push(newBook)
-      // parse books(Array) to books(Object)
       const reduced = added.reduce((val, data) => { return [ ...val, data ] }, {})
       this.books = reduced
     },
+    /**
+     * Bookの更新
+     * - ストレージに更新結果を反映する
+     */
     updateBook: function (book) {
       this.setStorage(book.id, book)
       let updatedBook = Object.values(this.books).filter(a => { return a.id === book.id })
       updatedBook[0] = {...book}
     },
+    /**
+     * Bookの削除
+     * ストレージに削除結果を反映する
+     */
     delBook: function (bookId) {
       storage.remove(`book${bookId}`, err => {
         if (err) throw err
         this.books = Object.values(this.books).filter(b => b.id !== bookId)
       })
     },
+    /**
+     * Bookの複製
+     * ストレージに複製結果を反映する
+     */
     cloneBook: function (book) {
       const cloneTo = {...deepCopyJSON(book)}
       if (cloneTo.problems && cloneTo.problems.length > 0) {
@@ -102,6 +138,10 @@ export default {
       }
       this.createBook(cloneTo)
     },
+    /**
+     * 全ブックの削除
+     * - デバッグ用に使用
+     */
     clearShelf: function () {
       storage.clear(err => {
         if (err) throw err
@@ -109,6 +149,10 @@ export default {
       })
     }
   },
+  /**
+   * 初期化処理
+   * - 全Bookの読み込み
+   */
   mounted: function () {
     this.getAllBook()
   }

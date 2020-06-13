@@ -13,6 +13,15 @@ export default {
     id: Number
   },
   methods: {
+    /**
+     * ボタン押下時のイベントを発火
+     * - 0
+     *     - Book詳細イベント
+     * - 1
+     *     - Book複製イベント
+     * - 2
+     *     - Book削除イベント
+     */
     request: function (requestCode) {
       switch (requestCode) {
         case 0:
