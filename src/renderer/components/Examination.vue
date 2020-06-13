@@ -137,7 +137,7 @@ export default {
 #linkCease:hover{
   cursor: pointer;
 }
-.tooltiptext{
+#linkCease.tooltiptext{
   font-size: 0.5em;
 }
 .divExamination{
