@@ -1,8 +1,9 @@
 <template>
   <div class="divExamination">
     <header>
-      <a @click="ceaseExam" id="linkCease">
+      <a @click="ceaseExam" id="linkCease" class="tooltip">
         <i class="fas fa-angle-left"></i>
+        <span class="tooltiptext">中断して戻る</span>
       </a>
       <div>
         <h1 class="title">{{book.title}}</h1>
@@ -135,6 +136,9 @@ export default {
 }
 #linkCease:hover{
   cursor: pointer;
+}
+.tooltiptext{
+  font-size: 0.5em;
 }
 .divExamination{
   position: relative;

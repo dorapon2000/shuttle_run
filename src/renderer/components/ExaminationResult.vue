@@ -59,10 +59,7 @@ export default {
       return false
     },
     retryExam: function () {
-      const result = confirm('もう一度、同じ問題を解きますか？')
-      if (result) {
-        this.$router.replace({name: 'exam', params: {book: this.book}})
-      }
+      this.$router.replace({name: 'exam', params: {book: this.book}})
     }
   },
   created: function () {
