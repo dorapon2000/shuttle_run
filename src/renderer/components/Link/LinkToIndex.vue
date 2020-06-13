@@ -1,6 +1,6 @@
 <template>
   <router-link to="/" id="linkToTop">
-    <i class="fas fa-angle-left"></i>
+    <i class="fas fa-home"></i>
   </router-link>
 </template>
 <script>

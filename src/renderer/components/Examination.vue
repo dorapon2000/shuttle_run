@@ -1,7 +1,9 @@
 <template>
   <div class="divExamination">
     <header>
-      <link-to-top></link-to-top>
+      <a @click="ceaseExam" id="linkCease">
+        <i class="fas fa-angle-left"></i>
+      </a>
       <div>
         <h1 class="title">{{book.title}}</h1>
         <count-timer ref="examTimer" :limitOfTime="limitOfTime"></count-timer>
@@ -32,11 +34,10 @@
 <script>
 import { shuffleArray } from '../utils/manipuleteObj'
 import CountTimer from './Timer/Timer'
-import LinkToTop from './Link/LinkToIndex.vue'
 const timeoutMilliSeconds = 500
 export default {
   name: 'examination',
-  components: {CountTimer, LinkToTop},
+  components: {CountTimer},
   data: function () {
     return {
       currentAnswer: '',
@@ -102,6 +103,13 @@ export default {
           examOrder: this.examOrder
         }
       })
+    },
+    ceaseExam: function () {
+      const result = confirm(`テストを中断して詳細画面に戻ります。
+回答内容は保存されませんがよろしいですか？`)
+      if (result) {
+        this.$router.replace({name: 'book-detail', params: {book: this.book}})
+      }
     }
   },
   created: function () {
@@ -121,11 +129,18 @@ export default {
 </script>
 
 <style>
+#linkCease{
+  color: crimson;
+  font-size: 2em;
+}
+#linkCease:hover{
+  cursor: pointer;
+}
 .divExamination{
   position: relative;
   height: 100vh;
   width: 100vw;
-  padding: 10px;
+  padding: 60px;
   background-color: #e0ffff;
 }
 .title{

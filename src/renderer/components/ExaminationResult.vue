@@ -3,7 +3,13 @@
     <header>
       <link-to-top></link-to-top>
       <div>
-        <h1 class="title">{{book.title}}：回答結果</h1>
+        <h1 class="title">
+          {{book.title}}：回答結果
+          <span class="tooltip">
+            <i id="retry" class="fas fa-undo" @click="retryExam" ></i>
+            <span class="tooltiptext">再挑戦!!</span>
+          </span>
+        </h1>
       </div>
     </header>
     <main>
@@ -51,6 +57,12 @@ export default {
         }
       }
       return false
+    },
+    retryExam: function () {
+      const result = confirm('もう一度、同じ問題を解きますか？')
+      if (result) {
+        this.$router.replace({name: 'exam', params: {book: this.book}})
+      }
     }
   },
   created: function () {
@@ -83,11 +95,16 @@ class JsonUtil {
 </script>
 
 <style>
+#retry{
+  margin-left: 1em;
+  color: chartreuse;
+}
+#retry:hover{
+  cursor: pointer;
+}
 .divExamination{
   position: relative;
-  height: 100vh;
-  width: 100vw;
-  padding: 10px;
+  padding: 60px;
   background-color: #e0ffff;
 }
 .divResultGraph {
@@ -95,13 +112,12 @@ class JsonUtil {
     display: flex;
     align-items: center;
     width: 90vw;
-    height: 50vh;
     justify-content: space-between;
 }
 .cardList{
   margin: 0 auto;
   width: 90vw;
-  height: 30vh;
+  height: 20vh;
   overflow-y: scroll;
 }
 .divCard > span{
