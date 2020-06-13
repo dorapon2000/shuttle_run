@@ -1,7 +1,7 @@
 <template>
   <div class="divExamination">
     <header>
-      <router-link to="/">戻る</router-link>
+      <link-to-top></link-to-top>
       <div>
         <h1 class="title">{{book.title}}：回答結果</h1>
       </div>
@@ -29,10 +29,12 @@
 </template>
 
 <script>
+import LinkToTop from './Link/LinkToIndex.vue'
 import BookStatistics from './Book/Statistics'
 export default {
   name: 'examResult',
   components: {
+    LinkToTop,
     BookStatistics
   },
   props: {

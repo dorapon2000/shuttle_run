@@ -1,7 +1,7 @@
 <template>
   <div class="divExamination">
     <header>
-      <router-link to="/">戻る</router-link>
+      <link-to-top></link-to-top>
       <div>
         <h1 class="title">{{book.title}}</h1>
         <count-timer ref="examTimer" :limitOfTime="limitOfTime"></count-timer>
@@ -32,10 +32,11 @@
 <script>
 import { shuffleArray } from '../utils/manipuleteObj'
 import CountTimer from './Timer/Timer'
+import LinkToTop from './Link/LinkToIndex.vue'
 const timeoutMilliSeconds = 500
 export default {
   name: 'examination',
-  components: {CountTimer},
+  components: {CountTimer, LinkToTop},
   data: function () {
     return {
       currentAnswer: '',
