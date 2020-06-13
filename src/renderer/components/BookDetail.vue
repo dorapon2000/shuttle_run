@@ -1,6 +1,6 @@
 <template>
   <div class="divBookDetail">
-    <router-link to="/">戻る</router-link>
+    <link-to-top></link-to-top>
     <div>
       <h1 class="title">{{book.title}}</h1>
       <router-link :to="{name:'exam', params:{book}}" class="btnGameStart">問題を解く</router-link>
@@ -23,12 +23,13 @@
 
 <script>
 import Card from './BookDetail/Card.vue'
+import LinkToTop from './Link/LinkToIndex.vue'
 import { SumOfOkAvg } from '../utils/stats.js'
 import JsonUtil from '../utils/jsonUtil.js'
 
 export default {
   name: 'BookDetail',
-  components: { Card },
+  components: { Card, LinkToTop },
   props: ['book'],
   data () {
     return {
