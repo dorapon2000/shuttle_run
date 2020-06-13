@@ -93,7 +93,14 @@ export default {
       this.timer.startCount()
     },
     showTotal: function () {
-      this.$router.push({ name: 'examResult', params: {book: this.book, result: this.result, examOrder: this.examOrder} })
+      this.$router.push({
+        name: 'examResult',
+        params: {
+          book: this.book,
+          result: this.result,
+          examOrder: this.examOrder
+        }
+      })
     }
   },
   mounted: function () {

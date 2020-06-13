@@ -51,7 +51,31 @@ export default {
       return false
     }
   },
-  mounted: {
+  created: function () {
+    this.book.tryCount++
+    for (let i in this.examOrder) {
+      const cardIdx = this.examOrder[i]
+      if (this.result[i] === 1) {
+        this.book.problems[cardIdx].stats.OK++
+      } else {
+        this.book.problems[cardIdx].stats.NG++
+      }
+    }
+
+    const json = new JsonUtil()
+    json.updateStorage(this.book)
+  }
+}
+
+class JsonUtil {
+  constructor () {
+    this.storage = require('electron-json-storage')
+  }
+
+  updateStorage (book) {
+    this.storage.set(`book${book.id}`, book, err => {
+      if (err) throw err
+    })
   }
 }
 </script>
