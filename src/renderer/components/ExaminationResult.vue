@@ -16,7 +16,7 @@
       <div class="divResultGraph">
         <div class="divCurrentResult">
           今回の結果
-          <book-statistics style="width:40vw;" :problems="book.problems"></book-statistics>
+          <book-statistics style="width:40vw;" :problems="formatResultToProblems()"></book-statistics>
         </div>
         <div class="divTotalResult">
           今までの合計
@@ -62,6 +62,14 @@ export default {
     },
     retryExam: function () {
       this.$router.replace({name: 'exam', params: {book: this.book}})
+    },
+    formatResultToProblems: function () {
+      return [{
+        stats: {
+          OK: this.result.filter(x => x === 1).length,
+          NG: this.result.filter(x => x === -1).length
+        }
+      }]
     }
   },
   created: function () {
